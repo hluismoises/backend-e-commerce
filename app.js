@@ -1,5 +1,6 @@
 const express = require("express")
 const morgan = require("morgan")
+const mongoose = require("mongoose")
 const app = express()
 
 require("dotenv").config()
@@ -25,9 +26,20 @@ app.post(`${api}/products`, (req, res) => {
   res.send(newProduct)
 })
 
+mongoose
+  .connect(process.env.CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: "eshop-database",
+  })
+  .then(() => {
+    console.log("Database Connection is ready...")
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+
 app.listen(3000, () => {
   console.log(api)
   console.log("serveer is running on http://localhost:3000")
 })
-
-console.log("hello")
